@@ -1,0 +1,45 @@
+{
+    "version": 3,
+    "vendor": {
+        "conan": {}
+    },
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 15,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "conan-debug",
+            "displayName": "'conan-debug' config",
+            "description": "'conan-debug' configure using 'Ninja' generator",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_POLICY_DEFAULT_CMP0091": "NEW",
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "toolset": {
+                "value": "v143",
+                "strategy": "external"
+            },
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "toolchainFile": "C:\\Users\\fing.labcom\\CLionProjects\\ejemplo03\\cmake-build-debug\\conan\\build\\Debug\\generators\\conan_toolchain.cmake",
+            "binaryDir": "C:\\Users\\fing.labcom\\CLionProjects\\ejemplo03\\cmake-build-debug\\conan\\build\\Debug"
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "conan-debug",
+            "configurePreset": "conan-debug"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "conan-debug",
+            "configurePreset": "conan-debug"
+        }
+    ]
+}
