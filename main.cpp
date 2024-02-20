@@ -12,6 +12,13 @@
 #define IMAGE_WIDTH 1920
 #define IMAGE_HEIGTH 1080
 
+static double x_start=-2;
+static double x_end=1;
+static double y_start=-1;
+static double y_end=1;
+
+static double ZOOM_FACTOR = 0.95;
+
 #define CHECK(expr) {                       \
         auto err = (expr);                  \
         if (err != cudaSuccess) {           \
@@ -62,12 +69,6 @@ std::vector<unsigned int> colors_ramp = {
         _bswap32(0xF9C52CFF),
         _bswap32(0xF2E660FF),
 };
-
-static const double x_start=-2;
-static const double x_end=1;
-static const double y_start=-1;
-static const double y_end=1;
-
 static bool paused= false;
 
 GLuint textureID;
@@ -156,6 +157,47 @@ void render(){
     }
 }
 
+void zoom(double factor) {
+
+    double p = 0;
+
+    if(factor==1) {
+
+        p = 2-ZOOM_FACTOR;
+
+    }
+
+    else {
+
+        p = ZOOM_FACTOR;
+
+    }
+
+    x_start = x_start * p;
+
+    x_end   = x_end   * p;
+
+    y_start = y_start * p;
+
+    y_end   = y_end   * p;
+
+}
+
+void pan(double xdir, double ydir) {
+
+    double percentx = xdir* (x_end-x_start)/100; // 10%
+
+    double percenty = ydir * (y_end-y_start)/100; // 10%
+
+    x_start = x_start + percentx;
+
+    x_end   = x_end   + percentx;
+
+    y_start = y_start + percenty;
+
+    y_end   = y_end   + percenty;
+
+}
 
 int main() {
 
@@ -213,6 +255,24 @@ int main() {
                     paused = false;
                 }
             }
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
+            zoom(1);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
+            zoom(-1);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
+            pan(-1,0);
+        }
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
+            pan(1,0);
+        }
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
+            pan(0,1);
+        }
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
+            pan(0,-1);
         }
         if(max_iterations<100 && !paused)
             max_iterations++;
